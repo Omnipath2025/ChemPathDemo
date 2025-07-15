@@ -107,12 +107,10 @@ Full traditional-to-modern therapeutic development workflow:
 - NumPy, Pandas, Scikit-learn
 - Optional: GPU for quantum calculations
 
-### Quick Demo
-
-```bash
 git clone https://github.com/ChemPath/ChemPathDemo.git
 cd ChemPathDemo
 python complete_integration_pipeline.py
+
 Expected Output:
 🌟 CHEMPATH COMPLETE INTEGRATION DEMONSTRATION
 =======================================================
