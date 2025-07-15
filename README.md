@@ -112,6 +112,7 @@ cd ChemPathDemo
 python complete_integration_pipeline.py
 
 Expected Output
+
 🌟 CHEMPATH COMPLETE INTEGRATION DEMONSTRATION
 =======================================================
 
