@@ -108,6 +108,7 @@ Full traditional-to-modern therapeutic development workflow:
 - Optional: GPU for quantum calculations
 
 ### Quick Demo
+
 ```bash
 git clone https://github.com/ChemPath/ChemPathDemo.git
 cd ChemPathDemo
