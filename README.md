@@ -113,8 +113,7 @@ Full traditional-to-modern therapeutic development workflow:
 git clone https://github.com/ChemPath/ChemPathDemo.git
 cd ChemPathDemo
 python complete_integration_pipeline.py
-
-Expected Output
+Expected Output:
 🌟 CHEMPATH COMPLETE INTEGRATION DEMONSTRATION
 =======================================================
 Case Study: Ashwagandha (Withania somnifera) - Traditional Adaptogen
