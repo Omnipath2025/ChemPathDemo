@@ -6,8 +6,8 @@
 
 ---
 
-## 🚀 Enhanced Demo: 289.9x Bioavailability Improvement
-**NOT** just theoretical research - this is a functional chemical optimization platform!
+## 🚀 Enhanced Simulation: 289.9x Bioavailability Improvement
+**NOT** just theoretical research - this is a functional chemical optimization simulation platform!
 
 ### ⚡ Performance Enhancements:
 - **54.3% Processing Speed Improvement** over conventional platforms
@@ -85,18 +85,18 @@
 
 ---
 
-## 🧪 Live Demo: Try It Yourself
+## 🧪 Live Simulation: Run the Simulation
 
-### Working Demo Components:
+### Working Simulation Components:
 ```bash
-# Clone and run the enhanced demo
+# Clone and run the enhanced simulation
 git clone https://github.com/Omnipath2025/ChemPathDemo.git
 cd ChemPathDemo
 
 # Install dependencies
 pip install numpy pandas
 
-# Run enhanced chemical optimization demo
+# Run enhanced chemical optimization simulation
 python complete_integration_pipeline.py
 
 # Test individual modules
@@ -173,7 +173,7 @@ Build authentic traditional knowledge collaborations and scale platform capabili
    - Cultural context preservation
 
 5. **Complete Integration Pipeline** (`complete_integration_pipeline.py`)
-   - End-to-end workflow orchestration
+   - End-to-end workflow simulation
    - Modular deployment configuration
    - Performance metrics tracking
    - Development report generation
@@ -192,7 +192,7 @@ Build authentic traditional knowledge collaborations and scale platform capabili
 ChemPathDemo/
 ├── README.md                                  # This file
 ├── requirements.txt                           # Python dependencies
-├── complete_integration_pipeline.py           # Main demo (v5.1 enhanced)
+├── complete_integration_pipeline.py           # Main simulation (v5.1 enhanced)
 ├── classical_binding_simulator.py             # Classical molecular modeling
 ├── cultural_qsar_engine.py                    # Cultural-aware AI engine
 ├── tradition_aware_admet_predictor.py         # ADMET predictions
@@ -314,7 +314,7 @@ ChemPathDemo/
 
 ## 📄 License
 
-MIT License - For Fundraising Demonstration
+MIT License - For Research Simulation
 
 This is a demonstration platform showing the capabilities of ChemPath for foundation grant applications and fundraising presentations. The code demonstrates core innovations in traditional knowledge integration, bias mitigation, and modular deployment architecture.
 
@@ -330,7 +330,7 @@ cd ChemPathDemo
 # Install dependencies
 pip install numpy pandas
 
-# Run main demo
+# Run main simulation
 python complete_integration_pipeline.py
 ```
 

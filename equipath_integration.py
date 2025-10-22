@@ -14,7 +14,7 @@ Key Features:
 
 Author: Cloak and Quill Research (501c3)
 Location: Nevada, Clark County
-License: MIT - For Fundraising Demonstration
+License: MIT - For Research Simulation
 """
 
 import numpy as np
@@ -291,13 +291,13 @@ Community Benefit-Sharing: ✅ Active
         return report
 
 
-def demonstrate_equipath_integration():
+def simulate_equipath_integration():
     """
-    Demonstration of EquiPath compensation integration.
+    Simulation of EquiPath compensation integration.
 
-    Shows privacy-preserving traditional knowledge attribution.
+    Simulates privacy-preserving traditional knowledge attribution.
     """
-    print("🔒 EquiPath Compensation Integration Demonstration")
+    print("🔒 EquiPath Compensation Integration Simulation")
     print("=" * 55)
 
     # Initialize coordinator
@@ -347,9 +347,9 @@ def demonstrate_equipath_integration():
 
 
 if __name__ == "__main__":
-    # Run demonstration
-    coordinator, records = demonstrate_equipath_integration()
+    # Run simulation
+    coordinator, records = simulate_equipath_integration()
 
-    print("✅ EquiPath Integration Demo Complete!")
+    print("✅ EquiPath Integration Simulation Complete!")
     print("   Privacy-preserving compensation framework operational")
     print("   Traditional knowledge contributors protected and compensated")

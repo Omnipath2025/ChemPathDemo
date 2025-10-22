@@ -1,11 +1,11 @@
 """
-ChemPath Classical Binding Simulator - Enhanced Demo Version
-===========================================================
+ChemPath Classical Binding Simulator - Enhanced Simulation Version
+==================================================================
 
 GPU-accelerated classical molecular mechanics engine for molecular docking with traditional solvents.
 Incorporates cultural preparation methods into molecular modeling for enhanced bioactivity prediction.
 
-This module demonstrates:
+This module simulates:
 - Traditional solvent parameter integration (ghee, neem oil, coconut oil)
 - Classical molecular mechanics with cultural context
 - Molecular docking with traditional preparation methods
@@ -19,7 +19,7 @@ Key Features:
 
 Author: Cloak and Quill Research (501c3)
 Location: Nevada, Clark County
-License: MIT - For Fundraising Demonstration
+License: MIT - For Research Simulation
 """
 
 import numpy as np
@@ -601,13 +601,13 @@ class ClassicalBindingSimulator:
         return -1.364 * pkd  # -2.303 * 0.592 * pKd
 
 
-def demonstrate_classical_simulator():
+def simulate_classical_binding():
     """
-    Demonstration of Classical Binding Simulator for fundraising.
+    Simulation of Classical Binding Simulator for research validation.
 
-    Shows traditional solvent effects on molecular binding calculations.
+    Simulates traditional solvent effects on molecular binding calculations.
     """
-    print("⚛️  ChemPath Classical Binding Simulator Demonstration")
+    print("⚛️  ChemPath Classical Binding Simulator")
     print("=" * 60)
     print("Performance: 54.3% speed improvement | 42.8% accuracy enhancement")
     print("")
@@ -688,5 +688,5 @@ def demonstrate_classical_simulator():
 
 
 if __name__ == "__main__":
-    # Run demonstration
-    simulator, target, results = demonstrate_classical_simulator()
+    # Run simulation
+    simulator, target, results = simulate_classical_binding()
