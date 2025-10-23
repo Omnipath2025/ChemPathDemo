@@ -44,16 +44,33 @@ The web interface will automatically open and you can:
 - **Error Handling**: Displays any errors that occur
 
 ### Results Page (`/results`)
-- **Performance Metrics Cards**: Speed, accuracy, deployment, capacity
+- **Interactive Visualizations**: 9 Chart.js visualizations across 4 tabs
+  - Overview Tab: Bioavailability comparison & development confidence charts
+  - Comparison Tab: Radar chart, scatter plot, safety enhancement chart
+  - Synthesis Tab: Pathway distribution pie chart, sustainability chart
+  - Compensation Tab: Distribution bar chart, cultural preservation radar
+- **Quick Stats Dashboard**: Speed boost, accuracy gain, compounds count, total compensation
+- **Export Functionality**:
+  - JSON export for data analysis
+  - PDF export with formatted tables and complete results
 - **Compound Analysis**: Detailed results for all 3 compounds
   - QSAR scores
   - Binding affinity
   - Bioavailability improvements
   - Synthesis pathways
   - Safety enhancements
-- **EquiPath Compensation Summary**: Total compensation distributed
-- **Key Findings**: 4 major insights from the simulation
-- **Action Buttons**: Download report, run new simulation, share results
+  - Expandable cards with additional details
+  - Sort by bioavailability, confidence, or QSAR score
+  - Toggle between card view and table view
+- **EquiPath Compensation Summary**: Total compensation distributed with breakdown
+- **Key Findings**: 4 dynamic insights calculated from simulation results
+- **Interactive Features**:
+  - Hover tooltips on quick stats
+  - Expandable compound detail cards
+  - Tab navigation for visualizations
+  - Toast notifications for user actions
+  - Share results functionality (copy link to clipboard)
+- **Action Buttons**: Download PDF, export JSON, run new simulation, share results
 
 ## 🎨 Professional Design
 
@@ -70,17 +87,27 @@ The web interface will automatically open and you can:
 - **API Endpoints**:
   - `POST /api/start-simulation`: Start the simulation
   - `GET /api/simulation-status`: Get current progress
+  - `GET /api/export-json`: Export results as JSON file
+  - `GET /api/export-pdf`: Generate and download PDF report
 - **Background Processing**: Simulation runs in separate thread
 - **Status Tracking**: Global state management
+- **Export Features**:
+  - JSON export with complete results data
+  - PDF export with formatted tables using ReportLab
 
 ### Frontend (HTML/CSS/JS)
 - **templates/**: HTML templates
   - `index.html`: Landing page
   - `simulation.html`: Progress page
-  - `results.html`: Results display
+  - `results_enhanced.html`: Enhanced results display with visualizations
+  - `results.html`: Original simple results display (legacy)
 - **static/css/**: Stylesheets
   - `style.css`: All styles with modern design
-- **JavaScript**: Vanilla JS for AJAX calls and updates
+- **static/js/**: JavaScript files
+  - `results.js`: Chart.js visualizations, export handlers, interactive controls
+- **External Libraries**:
+  - Chart.js 4.4.0 (via CDN) for data visualizations
+  - ReportLab for server-side PDF generation
 
 ## 📱 Screenshots
 
@@ -97,11 +124,15 @@ The web interface will automatically open and you can:
 - Information box
 
 ### Results Display
-- Metrics grid
-- 3 compound cards
-- Compensation summary
-- Key findings
-- Action buttons
+- Quick stats dashboard with tooltips
+- 9 interactive Chart.js visualizations across 4 tabs
+- Expandable compound cards with sort/filter controls
+- Card view and table view toggle
+- Compensation summary with detailed breakdown
+- Dynamic key findings
+- Export buttons (JSON and PDF)
+- Share results functionality
+- Action buttons with icons
 
 ## 🛠️ Customization
 

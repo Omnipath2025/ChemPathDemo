@@ -10,12 +10,18 @@ Location: Nevada, Clark County
 License: MIT - For Research Simulation
 """
 
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, send_file
 import json
 import threading
 import time
 from datetime import datetime
 from complete_integration_pipeline import ChemPathIntegratedPipeline, TraditionalPlant
+import io
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak
+from reportlab.lib.units import inch
 
 app = Flask(__name__)
 
@@ -44,7 +50,7 @@ def run_simulation_page():
 @app.route('/results')
 def results_page():
     """Results display page."""
-    return render_template('results.html')
+    return render_template('results_enhanced.html')
 
 
 @app.route('/api/start-simulation', methods=['POST'])
@@ -230,6 +236,137 @@ def run_chempath_simulation():
         simulation_status['error'] = str(e)
         simulation_status['running'] = False
         simulation_status['progress'] = 0
+
+
+@app.route('/api/export-json')
+def export_json():
+    """Export results as JSON file."""
+    global simulation_status
+
+    if not simulation_status.get('results'):
+        return jsonify({'error': 'No results available'}), 404
+
+    # Create JSON string
+    json_data = json.dumps(simulation_status['results'], indent=2)
+
+    # Create in-memory file
+    json_file = io.BytesIO()
+    json_file.write(json_data.encode('utf-8'))
+    json_file.seek(0)
+
+    return send_file(
+        json_file,
+        mimetype='application/json',
+        as_attachment=True,
+        download_name=f'chempath_results_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
+    )
+
+
+@app.route('/api/export-pdf')
+def export_pdf():
+    """Export results as PDF file."""
+    global simulation_status
+
+    if not simulation_status.get('results'):
+        return jsonify({'error': 'No results available'}), 404
+
+    results = simulation_status['results']
+
+    # Create PDF in memory
+    pdf_buffer = io.BytesIO()
+    doc = SimpleDocTemplate(pdf_buffer, pagesize=letter)
+    story = []
+    styles = getSampleStyleSheet()
+
+    # Title
+    title = Paragraph("<b>ChemPath Simulation Results</b>", styles['Title'])
+    story.append(title)
+    story.append(Spacer(1, 0.3*inch))
+
+    # Plant name and timestamp
+    plant_info = Paragraph(f"<b>Plant:</b> {results['plant_name']}<br/><b>Timestamp:</b> {results['timestamp']}", styles['Normal'])
+    story.append(plant_info)
+    story.append(Spacer(1, 0.2*inch))
+
+    # Performance Metrics
+    metrics_title = Paragraph("<b>Performance Metrics</b>", styles['Heading1'])
+    story.append(metrics_title)
+
+    metrics = results['performance_metrics']
+    metrics_data = [
+        ['Metric', 'Value'],
+        ['Speed Improvement', metrics['speed_improvement']],
+        ['Accuracy Enhancement', metrics['accuracy_enhancement']],
+        ['Deployment Flexibility', metrics['deployment_flexibility']],
+        ['Processing Capacity', metrics['processing_capacity']]
+    ]
+
+    metrics_table = Table(metrics_data, colWidths=[3*inch, 3*inch])
+    metrics_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 14),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ]))
+    story.append(metrics_table)
+    story.append(Spacer(1, 0.3*inch))
+
+    # Compounds
+    compounds_title = Paragraph("<b>Compound Analysis</b>", styles['Heading1'])
+    story.append(compounds_title)
+    story.append(Spacer(1, 0.2*inch))
+
+    for compound in results['compounds']:
+        compound_name = Paragraph(f"<b>{compound['name']}</b>", styles['Heading2'])
+        story.append(compound_name)
+
+        compound_data = [
+            ['Property', 'Value'],
+            ['QSAR Score', f"{compound['qsar_score']} pIC50"],
+            ['Binding Affinity', f"{compound['binding_affinity']} pKd"],
+            ['Bioavailability', f"{compound['bioavailability']}%"],
+            ['Improvement', f"{compound['bioavailability_improvement']}x"],
+            ['Safety Enhancement', str(compound['safety_enhancement'])],
+            ['Development Confidence', f"{compound['development_confidence']}%"],
+            ['Synthesis Pathway', compound['synthesis_pathway'].upper()],
+            ['Sustainability', str(compound['sustainability'])],
+            ['Cultural Preservation', str(compound['cultural_preservation'])]
+        ]
+
+        compound_table = Table(compound_data, colWidths=[2.5*inch, 3.5*inch])
+        compound_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 12),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 10),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ]))
+        story.append(compound_table)
+        story.append(Spacer(1, 0.2*inch))
+
+    # EquiPath Compensation
+    compensation_title = Paragraph("<b>EquiPath Compensation Summary</b>", styles['Heading1'])
+    story.append(compensation_title)
+    story.append(Spacer(1, 0.1*inch))
+
+    compensation_text = Paragraph(f"<b>Total Compensation Distributed:</b> ${results['total_compensation']:.2f}", styles['Normal'])
+    story.append(compensation_text)
+
+    # Build PDF
+    doc.build(story)
+    pdf_buffer.seek(0)
+
+    return send_file(
+        pdf_buffer,
+        mimetype='application/pdf',
+        as_attachment=True,
+        download_name=f'chempath_results_{datetime.now().strftime("%Y%m%d_%H%M%S")}.pdf'
+    )
 
 
 if __name__ == '__main__':

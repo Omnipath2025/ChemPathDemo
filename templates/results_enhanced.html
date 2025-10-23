@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChemPath Simulation Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <h1>🧬 ChemPath</h1>
+                <p class="subtitle">Simulation Complete</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-export" onclick="exportJSON()">
+                    📥 Export JSON
+                </button>
+                <button class="btn-export" onclick="exportPDF()">
+                    📄 Export PDF
+                </button>
+                <button class="btn-secondary" onclick="window.location.href='/'">
+                    ← Back to Home
+                </button>
+            </div>
+        </header>
+
+        <!-- Results Header with Animation -->
+        <section class="results-header animate-fade-in">
+            <h2>✅ Simulation Complete!</h2>
+            <p class="results-subtitle" id="plantName">Loading results...</p>
+            <p class="timestamp" id="timestamp"></p>
+        </section>
+
+        <!-- Quick Stats with Tooltips -->
+        <section class="quick-stats animate-slide-up">
+            <div class="quick-stat" data-tooltip="Processing speed compared to conventional platforms">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-content">
+                    <div class="stat-number" id="quickSpeed">54.3%</div>
+                    <div class="stat-label">Speed Boost</div>
+                </div>
+            </div>
+            <div class="quick-stat" data-tooltip="Accuracy improvement through cultural-aware AI">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-content">
+                    <div class="stat-number" id="quickAccuracy">42.8%</div>
+                    <div class="stat-label">Accuracy Gain</div>
+                </div>
+            </div>
+            <div class="quick-stat" data-tooltip="Total compounds successfully analyzed">
+                <div class="stat-icon">🧪</div>
+                <div class="stat-content">
+                    <div class="stat-number" id="quickCompounds">3</div>
+                    <div class="stat-label">Compounds</div>
+                </div>
+            </div>
+            <div class="quick-stat" data-tooltip="Total compensation for traditional knowledge">
+                <div class="stat-icon">💰</div>
+                <div class="stat-content">
+                    <div class="stat-number" id="quickCompensation">$0</div>
+                    <div class="stat-label">Compensation</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Visualizations -->
+        <section class="visualizations-section animate-slide-up">
+            <h3>📊 Data Visualizations</h3>
+
+            <div class="viz-tabs">
+                <button class="viz-tab active" onclick="showViz('overview')">Overview</button>
+                <button class="viz-tab" onclick="showViz('comparison')">Compound Comparison</button>
+                <button class="viz-tab" onclick="showViz('synthesis')">Synthesis Pathways</button>
+                <button class="viz-tab" onclick="showViz('compensation')">Compensation</button>
+            </div>
+
+            <div class="viz-container">
+                <!-- Overview Tab -->
+                <div id="viz-overview" class="viz-content active">
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h4>Bioavailability Comparison</h4>
+                            <canvas id="bioavailabilityChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h4>Development Confidence</h4>
+                            <canvas id="confidenceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comparison Tab -->
+                <div id="viz-comparison" class="viz-content">
+                    <div class="charts-grid">
+                        <div class="chart-card full-width">
+                            <h4>Compound Metrics Radar</h4>
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h4>QSAR vs Binding Affinity</h4>
+                            <canvas id="scatterChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h4>Safety Enhancement</h4>
+                            <canvas id="safetyChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Synthesis Tab -->
+                <div id="viz-synthesis" class="viz-content">
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h4>Synthesis Pathway Distribution</h4>
+                            <canvas id="synthesisChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h4>Sustainability & Cultural Preservation</h4>
+                            <canvas id="sustainabilityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Compensation Tab -->
+                <div id="viz-compensation" class="viz-content">
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h4>Compensation Distribution</h4>
+                            <canvas id="compensationChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h4>Cultural Preservation Scores</h4>
+                            <canvas id="culturalChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Compounds Results with Expandable Cards -->
+        <section class="compounds-section animate-slide-up">
+            <h3>🔬 Compound Analysis Results</h3>
+
+            <!-- Filter/Sort Controls -->
+            <div class="controls-bar">
+                <div class="sort-controls">
+                    <label>Sort by:</label>
+                    <select id="sortSelect" onchange="sortCompounds(this.value)">
+                        <option value="default">Default Order</option>
+                        <option value="bioavailability">Bioavailability (High to Low)</option>
+                        <option value="confidence">Confidence (High to Low)</option>
+                        <option value="qsar">QSAR Score (High to Low)</option>
+                    </select>
+                </div>
+                <div class="view-controls">
+                    <button class="view-btn active" onclick="setView('cards')" data-tooltip="Card View">
+                        📋
+                    </button>
+                    <button class="view-btn" onclick="setView('table')" data-tooltip="Table View">
+                        📊
+                    </button>
+                </div>
+            </div>
+
+            <div id="compoundsContainer">
+                <!-- Populated by JavaScript -->
+            </div>
+
+            <!-- Table View (hidden by default) -->
+            <div id="tableView" style="display: none;">
+                <div class="table-wrapper">
+                    <table class="compounds-table">
+                        <thead>
+                            <tr>
+                                <th>Compound</th>
+                                <th>QSAR Score</th>
+                                <th>Binding Affinity</th>
+                                <th>Bioavailability</th>
+                                <th>Improvement</th>
+                                <th>Confidence</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- EquiPath Compensation with Animation -->
+        <section class="compensation-section animate-slide-up">
+            <h3>🔒 EquiPath Compensation Summary</h3>
+            <div class="compensation-summary" id="compensationSummary">
+                <!-- Populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Key Findings with Interactive Cards -->
+        <section class="findings-section animate-slide-up">
+            <h3>💡 Key Findings</h3>
+            <div class="findings-grid" id="findingsGrid">
+                <!-- Populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Actions with Enhanced Buttons -->
+        <section class="actions-section animate-slide-up">
+            <h3>🚀 Next Steps</h3>
+            <div class="actions-grid">
+                <button class="action-btn" onclick="exportPDF()">
+                    <span class="action-icon">📄</span>
+                    <div class="action-content">
+                        <strong>Download PDF Report</strong>
+                        <small>Complete simulation results</small>
+                    </div>
+                </button>
+                <button class="action-btn" onclick="exportJSON()">
+                    <span class="action-icon">💾</span>
+                    <div class="action-content">
+                        <strong>Export JSON Data</strong>
+                        <small>For further analysis</small>
+                    </div>
+                </button>
+                <button class="action-btn" onclick="window.location.href='/'">
+                    <span class="action-icon">🔄</span>
+                    <div class="action-content">
+                        <strong>Run New Simulation</strong>
+                        <small>Start fresh analysis</small>
+                    </div>
+                </button>
+                <button class="action-btn" onclick="shareResults()">
+                    <span class="action-icon">📤</span>
+                    <div class="action-content">
+                        <strong>Share Results</strong>
+                        <small>Collaborate with team</small>
+                    </div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>ChemPath Enhanced v5.1 | Cloak & Quill Research (501c3)</p>
+            <p>Traditional Knowledge + Advanced Molecular Modeling + AI = Breakthrough Innovation</p>
+        </footer>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="{{ url_for('static', filename='js/results.js') }}"></script>
+</body>
+</html>
