@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChemPath Simulation Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <h1>🧬 ChemPath</h1>
+                <p class="subtitle">Simulation Complete</p>
+            </div>
+            <button class="btn-secondary" onclick="window.location.href='/'">
+                ← Back to Home
+            </button>
+        </header>
+
+        <!-- Results Header -->
+        <section class="results-header">
+            <h2>✅ Simulation Complete!</h2>
+            <p class="results-subtitle" id="plantName">Loading results...</p>
+            <p class="timestamp" id="timestamp"></p>
+        </section>
+
+        <!-- Performance Metrics -->
+        <section class="metrics-section">
+            <h3>Performance Metrics</h3>
+            <div class="metrics-grid" id="metricsGrid">
+                <!-- Populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Compounds Results -->
+        <section class="compounds-section">
+            <h3>Compound Analysis Results</h3>
+            <div id="compoundsContainer">
+                <!-- Populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- EquiPath Compensation Summary -->
+        <section class="compensation-section">
+            <h3>🔒 EquiPath Compensation Summary</h3>
+            <div class="compensation-summary" id="compensationSummary">
+                <!-- Populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Key Findings -->
+        <section class="findings-section">
+            <h3>💡 Key Findings</h3>
+            <div class="findings-grid">
+                <div class="finding-card">
+                    <div class="finding-icon">🎯</div>
+                    <div class="finding-content">
+                        <h4>Bioavailability Enhancement</h4>
+                        <p id="bioavailabilityFinding">Traditional preparations significantly improve compound absorption</p>
+                    </div>
+                </div>
+                <div class="finding-card">
+                    <div class="finding-icon">🌿</div>
+                    <div class="finding-content">
+                        <h4>Cultural Preservation</h4>
+                        <p id="culturalFinding">Traditional knowledge maintained with high preservation scores</p>
+                    </div>
+                </div>
+                <div class="finding-card">
+                    <div class="finding-icon">⚗️</div>
+                    <div class="finding-content">
+                        <h4>Synthesis Pathways</h4>
+                        <p id="synthesisFinding">Hybrid approaches balance efficiency with cultural integrity</p>
+                    </div>
+                </div>
+                <div class="finding-card">
+                    <div class="finding-icon">✅</div>
+                    <div class="finding-content">
+                        <h4>Safety Profile</h4>
+                        <p id="safetyFinding">Enhanced safety through traditional preparation methods</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Actions -->
+        <section class="actions-section">
+            <h3>Next Steps</h3>
+            <div class="actions-grid">
+                <button class="action-btn" onclick="downloadReport()">
+                    📄 Download Full Report
+                </button>
+                <button class="action-btn" onclick="window.location.href='/'">
+                    🔄 Run New Simulation
+                </button>
+                <button class="action-btn" onclick="shareResults()">
+                    📤 Share Results
+                </button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>ChemPath Enhanced v5.1 | Cloak & Quill Research (501c3)</p>
+            <p>Traditional Knowledge + Advanced Molecular Modeling + AI = Breakthrough Innovation</p>
+        </footer>
+    </div>
+
+    <script>
+        let resultsData = null;
+
+        function loadResults() {
+            fetch('/api/simulation-status')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.results) {
+                        resultsData = data.results;
+                        displayResults(data.results);
+                    } else {
+                        document.querySelector('.results-subtitle').textContent = 'No results available. Please run a simulation first.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading results:', error);
+                    document.querySelector('.results-subtitle').textContent = 'Error loading results.';
+                });
+        }
+
+        function displayResults(results) {
+            // Update header
+            document.getElementById('plantName').textContent = results.plant_name;
+            document.getElementById('timestamp').textContent = 'Completed: ' + results.timestamp;
+
+            // Display performance metrics
+            const metrics = results.performance_metrics;
+            document.getElementById('metricsGrid').innerHTML = `
+                <div class="metric-card">
+                    <div class="metric-value">${metrics.speed_improvement}</div>
+                    <div class="metric-label">Speed Improvement</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">${metrics.accuracy_enhancement}</div>
+                    <div class="metric-label">Accuracy Enhancement</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">${metrics.deployment_flexibility}</div>
+                    <div class="metric-label">Deployment Flexibility</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">${metrics.processing_capacity}</div>
+                    <div class="metric-label">Processing Capacity</div>
+                </div>
+            `;
+
+            // Display compounds
+            const compoundsHTML = results.compounds.map(compound => `
+                <div class="compound-card">
+                    <div class="compound-header">
+                        <h4>${compound.name}</h4>
+                        <span class="confidence-badge">${compound.development_confidence}% confidence</span>
+                    </div>
+                    <div class="compound-metrics">
+                        <div class="compound-metric">
+                            <span class="label">QSAR Score:</span>
+                            <span class="value">${compound.qsar_score} pIC50</span>
+                        </div>
+                        <div class="compound-metric">
+                            <span class="label">Binding Affinity:</span>
+                            <span class="value">${compound.binding_affinity} pKd</span>
+                        </div>
+                        <div class="compound-metric">
+                            <span class="label">Bioavailability:</span>
+                            <span class="value highlight">${compound.bioavailability}%</span>
+                        </div>
+                        <div class="compound-metric">
+                            <span class="label">Improvement:</span>
+                            <span class="value highlight">${compound.bioavailability_improvement}x</span>
+                        </div>
+                        <div class="compound-metric">
+                            <span class="label">Safety Enhancement:</span>
+                            <span class="value">${compound.safety_enhancement}</span>
+                        </div>
+                        <div class="compound-metric">
+                            <span class="label">Synthesis Pathway:</span>
+                            <span class="value">${compound.synthesis_pathway.toUpperCase()}</span>
+                        </div>
+                    </div>
+                    <div class="compound-details">
+                        <div class="detail-row">
+                            <strong>Optimal Solvent:</strong> ${compound.optimal_solvent}
+                        </div>
+                        <div class="detail-row">
+                            <strong>Enhancers:</strong> ${compound.enhancers.join(', ')}
+                        </div>
+                        <div class="detail-row">
+                            <strong>Sustainability:</strong> ${compound.sustainability}
+                        </div>
+                        <div class="detail-row">
+                            <strong>Cultural Preservation:</strong> ${compound.cultural_preservation}
+                        </div>
+                    </div>
+                    ${compound.compensation ? `
+                        <div class="compensation-info">
+                            <strong>💰 EquiPath Compensation:</strong> $${compound.compensation.amount.toFixed(2)}
+                            <br><small>Record ID: ${compound.compensation.record_id}</small>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+            document.getElementById('compoundsContainer').innerHTML = compoundsHTML;
+
+            // Display compensation summary
+            document.getElementById('compensationSummary').innerHTML = `
+                <div class="compensation-total">
+                    <div class="total-label">Total Compensation Distributed:</div>
+                    <div class="total-value">$${results.total_compensation.toFixed(2)}</div>
+                </div>
+                <div class="compensation-details">
+                    <p>✅ Privacy-preserving attribution via zero-knowledge proofs</p>
+                    <p>✅ Blockchain-ready compensation records generated</p>
+                    <p>✅ Traditional knowledge contributors protected and compensated</p>
+                    <p>✅ Cultural context preservation maintained throughout workflow</p>
+                </div>
+            `;
+        }
+
+        function downloadReport() {
+            alert('Full report download functionality would be implemented here.');
+        }
+
+        function shareResults() {
+            alert('Results sharing functionality would be implemented here.');
+        }
+
+        // Load results when page loads
+        window.onload = function() {
+            loadResults();
+        };
+    </script>
+</body>
+</html>
